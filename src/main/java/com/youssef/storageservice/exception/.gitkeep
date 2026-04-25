@@ -1,0 +1,2 @@
+// Package: exception
+// Custom exceptions and @RestControllerAdvice global handler

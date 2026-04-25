@@ -1,0 +1,2 @@
+// Package: config
+// Spring @Configuration classes (SecurityConfig, StorageConfig, etc.)

@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: storage-service
+
+  # Database (will be overridden per profile)
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME:}
+    password: ${DB_PASSWORD:}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 5         # keep small for Neon free tier
+      minimum-idle: 1
+      idle-timeout: 300000
+      max-lifetime: 1200000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate            # never auto-create in prod; we use schema.sql
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  # Multipart upload limits
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 105MB
+
+  # Security (override Spring Security auto-config header)
+  security:
+    user:
+      name: disabled               # disable default Basic Auth user
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# Application-level config
+app:
+  storage:
+    base-path: ${STORAGE_BASE_PATH:/var/storage}
+  security:
+    rate-limit:
+      requests-per-minute: 100
+
+# Logging
+logging:
+  level:
+    com.youssef.storageservice: INFO
+    org.springframework.security: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

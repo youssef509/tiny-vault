@@ -1,0 +1,2 @@
+// Package: service
+// Business logic layer (FileService, AuthService, UserService, etc.)

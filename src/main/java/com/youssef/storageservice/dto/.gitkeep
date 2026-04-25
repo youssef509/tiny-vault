@@ -1,0 +1,2 @@
+// Package: dto
+// Request/Response DTOs (never expose entities directly to API consumers)

@@ -1,0 +1,22 @@
+spring:
+  # Production profile: all sensitive values come from environment variables
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate            # never mutate schema in prod
+    show-sql: false
+
+app:
+  storage:
+    base-path: /var/storage         # Contabo VPS disk path
+
+logging:
+  level:
+    com.youssef.storageservice: INFO
+    org.springframework.security: WARN
+  file:
+    name: /var/log/storage-service/app.log

@@ -1,0 +1,37 @@
+spring:
+  # Dev profile: connect to Neon PostgreSQL, show SQL for debugging
+  datasource:
+    url: jdbc:postgresql://ep-plain-dust-aloeg9dl-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+    username: neondb_owner
+    password: npg_hTqo3FKfEaQ7
+
+  jpa:
+    hibernate:
+      ddl-auto: update              # auto-create/update tables in dev for convenience
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+app:
+  storage:
+    base-path: ${user.home}/storage-dev    # local dev folder (e.g. C:/Users/Youss/storage-dev)
+
+  # ---------------------------------------------------------------
+  # Initial user creation (one-time setup)
+  # Set create-user: true, fill in your credentials, start the app.
+  # After the user is created, set create-user: false (or delete block).
+  # The runner is safe to re-run — it skips if the user already exists.
+  # ---------------------------------------------------------------
+  init:
+    create-user: false   # user already created — flip to true only to add a new user
+    user-email: youssef@example.com
+    user-api-key: youssef-storage-key-v1
+    user-api-secret: myS3cretP@ssword123!
+
+logging:
+  level:
+    com.youssef.storageservice: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
