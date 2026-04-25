@@ -12,7 +12,7 @@ import java.util.UUID;
  *
  * The actual file content lives on disk at {@code storagePath}.
  * This record tells us: who owns the file, what it's called, how big it is,
- * what type it is, and where to find it on disk.
+ * what type it is, where to find it on disk, and whether it's publicly accessible.
  */
 @Entity
 @Table(
@@ -74,6 +74,20 @@ public class FileMetadata {
      */
     @Column(name = "storage_path", nullable = false, length = 500)
     private String storagePath;
+
+    /**
+     * Whether this file is publicly accessible without authentication.
+     *
+     * When true, the file can be fetched via GET /api/v1/public/{filename}
+     * without any X-API-Key / X-API-Secret headers — suitable for embedding
+     * images or files in Next.js / Laravel frontends.
+     *
+     * Default: false (private). Toggle with PATCH /api/v1/files/{filename}/visibility.
+     */
+    @Builder.Default
+    @Column(name = "is_public", nullable = false,
+            columnDefinition = "boolean not null default false")
+    private Boolean isPublic = false;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

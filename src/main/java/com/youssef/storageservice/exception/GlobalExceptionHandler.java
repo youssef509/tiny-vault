@@ -60,6 +60,13 @@ public class GlobalExceptionHandler {
                 "An unexpected error occurred", request.getRequestURI());
     }
 
+    @ExceptionHandler(org.springframework.web.multipart.support.MissingServletRequestPartException.class)
+    public ResponseEntity<Map<String, Object>> handleMissingPart(
+            org.springframework.web.multipart.support.MissingServletRequestPartException ex, HttpServletRequest request) {
+        return errorResponse(HttpStatus.BAD_REQUEST,
+                "Missing required request part: " + ex.getRequestPartName(), request.getRequestURI());
+    }
+
     private ResponseEntity<Map<String, Object>> errorResponse(
             HttpStatus status, String message, String path) {
         return ResponseEntity.status(status).body(Map.of(

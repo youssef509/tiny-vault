@@ -18,5 +18,7 @@ public class FileInfoResponse {
     private String originalFilename;
     private Long fileSizeBytes;
     private String mimeType;
+    private Boolean isPublic;
+    private String publicUrl;    // non-null for public files — embed directly in frontend
     private LocalDateTime uploadedAt;
 }

@@ -63,12 +63,34 @@ public class SecurityConfig {
                 // Public endpoints — no auth header required
                 .requestMatchers("/health").permitAll()
                 .requestMatchers("/actuator/health", "/actuator/info").permitAll()
-                // Spring's internal error dispatch — must be accessible without re-auth
+                // Spring's internal error dispatch
                 .requestMatchers("/error").permitAll()
+                // Public file serving — for Next.js <img>, Laravel views, etc.
+                .requestMatchers("/api/v1/public/**").permitAll()
 
                 // Everything else requires authentication (enforced by our filter)
                 .anyRequest().authenticated()
             )
+
+            // Security response headers (Task 4.2)
+            // These protect against common browser-based attack vectors
+            .headers(headers -> headers
+                // Prevent MIME-type sniffing — browser must respect declared Content-Type
+                .contentTypeOptions(contentType -> {})
+                // Prevent this API's responses from being embedded in iframes
+                .frameOptions(frame -> frame.deny())
+                // Referrer policy — don't leak the URL to third parties
+                .referrerPolicy(referrer ->
+                    referrer.policy(
+                        org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter
+                            .ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN))
+                // Content-Security-Policy — this is a pure API, no scripts/iframes needed
+                .contentSecurityPolicy(csp ->
+                    csp.policyDirectives("default-src 'none'; frame-ancestors 'none'"))
+            )
+
+            // Enable CORS so browser-based Next.js/Laravel frontends can call /api/v1/public/**
+            .cors(cors -> {})
 
             // Plug in our custom API key filter BEFORE Spring's default username/password filter
             .addFilterBefore(apiKeyAuthFilter, UsernamePasswordAuthenticationFilter.class);

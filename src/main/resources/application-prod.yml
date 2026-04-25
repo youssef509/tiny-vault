@@ -11,8 +11,18 @@ spring:
     show-sql: false
 
 app:
+  base-url: ${APP_BASE_URL:http://localhost:8080}
+  
   storage:
-    base-path: /var/storage         # Contabo VPS disk path
+    base-path: /var/storage         # Container mapped to Contabo VPS disk
+
+  cors:
+    allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:*}
+
+  security:
+    rate-limit:
+      enabled: true
+      requests-per-minute: 100
 
 logging:
   level:
@@ -20,3 +30,7 @@ logging:
     org.springframework.security: WARN
   file:
     name: /var/log/storage-service/app.log
+  logback:
+    rollingpolicy:
+      max-file-size: 100MB
+      max-history: 7

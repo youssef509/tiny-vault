@@ -46,7 +46,6 @@ Thumbs.db
 
 ### Project specific ###
 /storage-dev/
-.agent/
 
 ### Secrets - never commit these ###
 .env

@@ -70,6 +70,7 @@ public class ApiKeyAuthenticationService {
     /**
      * Masks an API key for safe logging.
      * "myapp-prod-key-abc123" → "myap***123"
+     * Public so other filters (AuditLoggingFilter) can reuse it.
      */
     public static String maskKey(String key) {
         if (key == null || key.length() < 6) return "***";

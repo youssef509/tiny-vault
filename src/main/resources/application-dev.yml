@@ -15,8 +15,18 @@ spring:
         format_sql: true
 
 app:
+  # Base URL of this service — used to build publicUrl in upload responses.
+  # In production: set this to your VPS domain, e.g. https://storage.mydomain.com
+  base-url: http://localhost:8080
+
   storage:
     base-path: ${user.home}/storage-dev    # local dev folder (e.g. C:/Users/Youss/storage-dev)
+
+  cors:
+    # Allowed origins for browser requests.
+    # Dev: allow everything (*). Prod: list your actual frontends.
+    # Example: https://myapp.com,http://localhost:3000,http://localhost:8000
+    allowed-origins: "*"
 
   # ---------------------------------------------------------------
   # Initial user creation (one-time setup)
@@ -29,6 +39,17 @@ app:
     user-email: youssef@example.com
     user-api-key: youssef-storage-key-v1
     user-api-secret: myS3cretP@ssword123!
+
+  security:
+    rate-limit:
+      enabled: true
+      requests-per-minute: 100   # lower this in prod if needed
+
+# Show full health details in dev
+management:
+  endpoint:
+    health:
+      show-details: always
 
 logging:
   level:

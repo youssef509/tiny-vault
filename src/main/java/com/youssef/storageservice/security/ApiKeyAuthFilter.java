@@ -87,7 +87,9 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         return path.equals("/health")
             || path.startsWith("/actuator/health")
-            || path.startsWith("/actuator/info");
+            || path.startsWith("/actuator/info")
+            // Public files — no API key needed, served to browsers directly
+            || path.startsWith("/api/v1/public/");
     }
 
     /**

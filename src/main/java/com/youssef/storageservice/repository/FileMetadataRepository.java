@@ -52,4 +52,19 @@ public interface FileMetadataRepository extends JpaRepository<FileMetadata, UUID
      * Prevents duplicate entries before saving to disk.
      */
     boolean existsByFilenameAndUser(String filename, User user);
+
+    /**
+     * Finds a file by stored filename only if it is marked as public.
+     * Used by GET /api/v1/public/{filename} — no user context needed.
+     *
+     * Returns empty if the file doesn't exist OR if it's private (isPublic=false).
+     * This is the security gate for the public serving endpoint.
+     */
+    Optional<FileMetadata> findByFilenameAndIsPublicTrue(String filename);
+
+    /**
+     * Counts how many public files a user has.
+     * Used by the GET /api/v1/storage/stats metrics endpoint.
+     */
+    long countByUserAndIsPublicTrue(User user);
 }
