@@ -89,7 +89,10 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
             || path.startsWith("/actuator/health")
             || path.startsWith("/actuator/info")
             // Public files — no API key needed, served to browsers directly
-            || path.startsWith("/api/v1/public/");
+            || path.startsWith("/api/v1/public/")
+            // Swagger UI and OpenAPI docs
+            || path.startsWith("/v3/api-docs")
+            || path.startsWith("/swagger-ui");
     }
 
     /**
