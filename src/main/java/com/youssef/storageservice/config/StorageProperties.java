@@ -37,7 +37,7 @@ public class StorageProperties {
 
     /**
      * Allowed MIME types. Files with any other MIME type are rejected with 400.
-     * Phase 4 will add content-based MIME verification (not just header-based).
+     * Verified by content-based MIME checking (magic bytes).
      */
     private List<String> allowedMimeTypes = List.of(
         // Images

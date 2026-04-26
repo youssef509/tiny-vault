@@ -67,12 +67,14 @@ public class SecurityConfig {
                 .requestMatchers("/error").permitAll()
                 // Public file serving — for Next.js <img>, Laravel views, etc.
                 .requestMatchers("/api/v1/public/**").permitAll()
+                // Swagger UI and OpenAPI docs
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 
                 // Everything else requires authentication (enforced by our filter)
                 .anyRequest().authenticated()
             )
 
-            // Security response headers (Task 4.2)
+            // Security response headers
             // These protect against common browser-based attack vectors
             .headers(headers -> headers
                 // Prevent MIME-type sniffing — browser must respect declared Content-Type

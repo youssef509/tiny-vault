@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Instant;
 import java.util.Map;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 /**
  * Storage metrics endpoint — returns per-user file statistics.
  *
@@ -24,16 +27,16 @@ import java.util.Map;
  *   "privateFiles": 8,
  *   "generatedAt": "2026-04-26T..."
  * }
- *
- * Task 4.4: Simple metrics without exposing actuator internals.
  */
 @RestController
 @RequestMapping("/api/v1/storage")
 @RequiredArgsConstructor
+@Tag(name = "Storage Metrics", description = "Endpoints for retrieving storage usage statistics")
 public class StorageMetricsController {
 
     private final FileMetadataRepository fileMetadataRepository;
 
+    @Operation(summary = "Get storage stats", description = "Returns total, public, and private file counts for the authenticated user.")
     @GetMapping("/stats")
     public ResponseEntity<Map<String, Object>> getStats() {
         User currentUser = SecurityUtils.getCurrentUser();

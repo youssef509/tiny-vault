@@ -21,6 +21,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 /**
  * REST controller for all file operations.
  *
@@ -44,6 +48,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
+@Tag(name = "File Management", description = "Endpoints for uploading, downloading, listing, and managing files")
 public class FileController {
 
     private final FileService fileService;
@@ -70,7 +75,8 @@ public class FileController {
      * In Next.js: store publicUrl in DB, then <Image src={file.publicUrl} />
      * In Laravel:  store publicUrl, then <img src="{{ $file->public_url }}" />
      */
-    @PostMapping("/upload")
+    @Operation(summary = "Upload a file", description = "Uploads a new file. Set public=true to allow unauthenticated access via the /public endpoint.")
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<FileUploadResponse> uploadFile(
             @RequestParam("file") MultipartFile file,
             @RequestParam(value = "public", defaultValue = "false") boolean isPublic) {
@@ -92,6 +98,7 @@ public class FileController {
      * Downloads a private file (requires API key).
      * For public files, prefer using the publicUrl directly.
      */
+    @Operation(summary = "Download a private file", description = "Downloads a file requiring authentication.")
     @GetMapping("/download/{filename}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {
         User currentUser = SecurityUtils.getCurrentUser();
@@ -129,6 +136,7 @@ public class FileController {
      * This means setting isPublic=false effectively "unpublishes" the file
      * from the public endpoint immediately.
      */
+    @Operation(summary = "Serve a public file", description = "Serves a public file without authentication. Ideal for frontend embedding.")
     @GetMapping("/public/{filename}")
     public ResponseEntity<Resource> servePublicFile(@PathVariable String filename) {
         log.debug("Public file request: {}", filename);
@@ -160,6 +168,7 @@ public class FileController {
      * Query params (all optional):
      *   page=0, size=20, sortBy=createdAt, direction=desc
      */
+    @Operation(summary = "List files", description = "Returns a paginated list of all files for the authenticated user.")
     @GetMapping("/files")
     public ResponseEntity<PagedResponse<FileInfoResponse>> listFiles(
             @RequestParam(defaultValue = "0")        int page,
@@ -189,6 +198,7 @@ public class FileController {
     // Delete — DELETE /api/v1/files/{filename}
     // -------------------------------------------------------------------------
 
+    @Operation(summary = "Delete a file", description = "Permanently deletes a file for the authenticated user.")
     @DeleteMapping("/files/{filename}")
     public ResponseEntity<Void> deleteFile(@PathVariable String filename) {
         User currentUser = SecurityUtils.getCurrentUser();
@@ -212,6 +222,7 @@ public class FileController {
      *
      * Use case: upload privately first (safe), then make public once validated.
      */
+    @Operation(summary = "Change file visibility", description = "Toggles a file between public and private visibility.")
     @PatchMapping("/files/{filename}/visibility")
     public ResponseEntity<FileInfoResponse> setVisibility(
             @PathVariable String filename,

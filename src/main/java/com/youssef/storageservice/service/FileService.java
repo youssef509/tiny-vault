@@ -261,7 +261,7 @@ public class FileService {
     /**
      * Sanitizes a client-provided original filename — rejects dangerous patterns.
      *
-     * Security checks (Task 4.3):
+     * Security checks:
      *   - Null bytes (used to trick some parsers: "evil.php\0.jpg")
      *   - Control characters (non-printable ASCII)
      *   - Path traversal sequences (../ and ..\ in any form)

@@ -16,8 +16,6 @@ import java.io.InputStream;
  *
  * This implementation checks the most common file signatures without
  * adding heavyweight dependencies (no Apache Tika needed for personal use).
- *
- * Phase 4 Task 4.3 implementation.
  */
 @Slf4j
 @Component
