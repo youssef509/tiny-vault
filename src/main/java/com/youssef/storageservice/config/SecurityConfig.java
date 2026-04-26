@@ -86,9 +86,9 @@ public class SecurityConfig {
                     referrer.policy(
                         org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter
                             .ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN))
-                // Content-Security-Policy — this is a pure API, no scripts/iframes needed
+                // Content-Security-Policy — Relaxed to allow Swagger UI scripts/styles
                 .contentSecurityPolicy(csp ->
-                    csp.policyDirectives("default-src 'none'; frame-ancestors 'none'"))
+                    csp.policyDirectives("default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'none'"))
             )
 
             // Enable CORS so browser-based Next.js/Laravel frontends can call /api/v1/public/**
