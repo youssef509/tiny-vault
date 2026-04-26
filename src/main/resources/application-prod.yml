@@ -1,3 +1,6 @@
+server:
+  forward-headers-strategy: framework
+
 spring:
   # Production profile: all sensitive values come from environment variables
   datasource:
