@@ -14,7 +14,7 @@ services:
       - APP_BASE_URL=${APP_BASE_URL:-http://localhost:8080}
       - APP_CORS_ALLOWED_ORIGINS=${CORS_ORIGINS:-*}
     volumes:
-      - ./storage-data:/var/storage
+      - storage-data:/var/storage
     networks:
       - coolify
     labels:
@@ -27,3 +27,7 @@ services:
 networks:
   coolify:
     external: true
+
+
+volumes:
+  storage-data:
