@@ -21,6 +21,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.storage-app.rule=Host(`storage.devyoussef.com`)"
       - "traefik.http.services.storage-app.loadbalancer.server.port=8080"
+      - "traefik.http.routers.storage-app.tls=true"
+      - "traefik.http.routers.storage-app.tls.certresolver=letsencrypt"
 
 networks:
   coolify:
