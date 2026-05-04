@@ -1,9 +1,6 @@
 version: '3.8'
 
 services:
-  # ---------------------------------------------------------
-  # Spring Boot Application
-  # ---------------------------------------------------------
   app:
     build: .
     container_name: storage-app
@@ -12,22 +9,11 @@ services:
       - "8080"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
-      # Connect to the remote Neon PostgreSQL DB
       - DB_URL=${DB_URL}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
-      
       - STORAGE_BASE_PATH=/var/storage
-      # Base URL used for building publicUrl in responses (update to your actual VPS domain)
       - APP_BASE_URL=${APP_BASE_URL:-http://localhost:8080}
-      # Allowed CORS origins for browser access
       - APP_CORS_ALLOWED_ORIGINS=${CORS_ORIGINS:-*}
     volumes:
-      # Mount a local directory on your VPS to the container's storage path
       - ./storage-data:/var/storage
-    networks:
-      - storage-network
-
-networks:
-  storage-network:
-    driver: bridge
